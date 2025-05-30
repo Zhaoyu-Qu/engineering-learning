@@ -83,6 +83,8 @@ You need to specify which modifications should be included in the next snapshot 
 - `git checkout -- <file>` discards changes
 
 ## GitHub CLI commands
+### Authentication
 - `gh auth login`
 - `gh auth status` checks if you are logged in
 - `gh auth logout`
+- `gh auth switch` switches to (activates) a different account
