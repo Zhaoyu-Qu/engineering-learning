@@ -79,3 +79,10 @@ You need to specify which modifications should be included in the next snapshot 
 - `git reset --soft HEAD~1` undoes the last commit. All committed changes will be put back to the staging area. The old commit object is not deleted, but since it has become unreachable, it may get pruned by the GC process at some point.
 - `git reset --hard HEAD~1` undoes the last commit and discards the changes. The old commit object is still not immediately deleted. The difference is that the undone changes won't show up in the staging area since they are discarded. But you can still retrieve the old commit as long as it hasn't been deleted by the GC process.
 - `git reset` unstages everything
+- `git commit --amend` edits a commit's contents/message
+- `git checkout -- <file>` discards changes
+
+## GitHub CLI commands
+- `gh auth login`
+- `gh auth status` checks if you are logged in
+- `gh auth logout`
