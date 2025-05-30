@@ -59,6 +59,8 @@ You need to specify which modifications should be included in the next snapshot 
 - `git log`
 - `git diff`
 - `git checkout` updates HEAD and current branch
+- `git stash`
+- `git stash apply` applies a stash (default is the latest, named stash@{0})
 
 ### Branching and merging
 - `git branch --all` show all branches
