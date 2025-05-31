@@ -1,0 +1,2 @@
+# Full Stack Development with Spring and React
+For the purpose of self-study, I am developing a small full-stack project. In this project, I will try to learn and use technologies that I am not familiar with, such as Docker, GitHub Actions, Amazon RDS, and more. This document details every step of the project development and the questions and explanations that arise during this process.
