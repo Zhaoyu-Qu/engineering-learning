@@ -48,5 +48,28 @@ The `build.gradle` file typically contains the following parts:
   - Tasks either come from build scripts or plugins. Gradle provides several default tasks for a project, which are listed by running `./gradlew tasks`. Once we apply a plugin to our project, additional tasks become available.
 
 ## Technical Requirements
-- Eclipse IDE for Enterprise Java and Web Developers
-- 
+- Eclipse IDE for Enterprise Java and Web Developers (eclipse-jee-2025-03-R-macosx-cocoa-aarch64.dmg)
+- JDK 21
+
+## Implementation Steps
+### Spring Initializr
+1. https://start.spring.io - a tool that is used to create Spring Boot projects
+2. Select Gradle Groovy + Spring Boot 3.1.0 + Jar + Java 21
+  - Dependencies:
+    - `Spring Web` (Builds web, including RESTful, application using Spring MVC. Uses Apache Tomcat as the default embedded container)
+    - `Spring Boot Dev Tools` (Provides fast application restarts, LiveReload, and configurations for enhanced development experience)
+  - Metadata:
+    - Group: `cloud.sleepjournal`. It's the base package or namespace for your project, usually written in reverse domain name format. For example, the intended domain name is `sleepjournal.cloud`, so you reverse it to `cloud.sleepjournal`. It helps uniquely identify your project among many others. It's also used as the base package in your Java code unless you override it.
+    - Artifact: `sleep-journal-backend`. When you build the app, Gradle or Maven will generate a file like sleep-journal-backend-0.0.1-SNAPSHOT.jar. This is also the project's root directory.
+    - Name: `Sleep Journal`. This is a human-readable name for the project. It does not affect class names or whatever.
+    - Description: `A web application for tracking and analyzing sleep patterns`.
+    - Package name: `cloud.sleepjournal.sleep-journal-backend`. This is the root package for all your classes. Spring Boot uses this to perform component scanning, so your @RestController, @Service, etc. must be in this package or sub-packages to be auto-detected.
+3. Generate and extract the ZIP package, then open Eclipse
+4. In Eclipse, select `File` -> `Import` -> `Gradle` -> `Existing Gradle Project` -> `Browse...` -> `Finish`
+5. Run the application from the terminal using `./gradlew bootrun` or run the application using the UI.
+
+#### Notes
+- In Eclipse under `Project Explorer`, there is a directory called `JRE System Library [JavaSE-21]`. `JRE System Library` is a virtual directory only visible in `Project Explorer`. It points to the location of the specific JRE used by this project, even though there might be multiple version of JREs installed. `[JavaSE-21]` is the intended JRE version for this project, inferred by Eclipse from the `build.gradle` file. However, Eclipse or Gradle does not guarantee the intended JRE version is used - it just uses the default JRE. You must make sure the intended version of JRE is available and is configured correctly.
+- There is another virtual directory called `Project and External Dependencies`, which points to the cached Gradle dependencies. These dependencies are downloaded by Gradle and can be reused by other projects. If you delete the cached Gradle dependencies, Gradle will simply redownload them the next time you build the project.
+- On macOS, the default Java version is managed by a tool called `/usr/libexec/java_home.` This allows you to set and switch between Java versions system-wide using the `JAVA_HOME` environment variable.
+- Command `/usr/libexec/java_home -v 21` shows the actual location of the JDK 21 on your system, while `which java` shows the the path to the java executable that is currently first in your shell's PATH.
