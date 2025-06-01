@@ -47,6 +47,23 @@ The `build.gradle` file typically contains the following parts:
   - When a user runs `./gradlew build` in the command line, Gradle will execute the `build` task along with any other tasks it depends on.
   - Tasks either come from build scripts or plugins. Gradle provides several default tasks for a project, which are listed by running `./gradlew tasks`. Once we apply a plugin to our project, additional tasks become available.
 
+#### Gradle Wrapper
+The recommended way to execute any Gradle build is with the help of the Gradle Wrapper (referred to as "Wrapper").
+
+The Wrapper is a smalls set of files that invoke a declared version of Gradle, downloading it beforehand if necessary. Instead of running `gradle build` using the installed Gradle, you use the Gradle Wrapper by calling `./gradlew build`.
+
+Files included in the wrapper:
+- `gradlew`: shell script (Unix)
+- `gradlew.bat`: batch script (Windows)
+- `gradle/wrapper/gradle-wrapper.jar`: small Java program to download/run Gradle
+- `gradle/wrapper/gradle-wrapper.properties`: defines the Gradle version to use
+
+Benefits:
+- Version consistency. Everyone uses the same Gradle version for the project
+- No need to install Gradle globally
+- Useful in CI/CD. You can run builds on GitHub Actions, Jenkins, etc., without managing Gradle installations
+- IDE support. Tools like Eclipse, IntelliJ, and VS Code understand and prefer using the wrapper
+
 ## Technical Requirements
 - Eclipse IDE for Enterprise Java and Web Developers (eclipse-jee-2025-03-R-macosx-cocoa-aarch64.dmg)
 - JDK 21
@@ -54,7 +71,7 @@ The `build.gradle` file typically contains the following parts:
 ## Implementation Steps
 ### Spring Initializr
 1. https://start.spring.io - a tool that is used to create Spring Boot projects
-2. Select Gradle Groovy + Spring Boot 3.1.0 + Jar + Java 21
+2. Select Gradle Groovy + Spring Boot 3.5.0 + Jar + Java 21
   - Dependencies:
     - `Spring Web` (Builds web, including RESTful, application using Spring MVC. Uses Apache Tomcat as the default embedded container)
     - `Spring Boot Dev Tools` (Provides fast application restarts, LiveReload, and configurations for enhanced development experience)
