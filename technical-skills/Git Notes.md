@@ -57,7 +57,8 @@ You need to specify which modifications should be included in the next snapshot 
 - `git log`
 - `git diff`
 - `git checkout` updates HEAD and current branch
-- `git checkout branch/commit -- path/to/file` check out an item from Git history or another branch
+- `git checkout branch/commit -- path/to/file` checks out an item from the Git history or another branch into your current working space. Operates at the file or directory level
+- `git cherry-pick commit` operates at the commit level, brining over all changes in the specified commit(s)
 - `git stash`
 - `git stash apply` applies a stash (default is the latest, named stash@{0})
 
@@ -79,7 +80,7 @@ You need to specify which modifications should be included in the next snapshot 
 - `git reset --hard HEAD~1` undoes the last commit and discards the changes. The old commit object is still not immediately deleted. The difference is that the undone changes won't show up in the staging area since they are discarded. But you can still retrieve the old commit as long as it hasn't been deleted by the GC process.
 - `git reset` unstages everything
 - `git commit --amend` edits a commit's contents/message
-- `git checkout -- <file>` discards changes
+- `git checkout .` discards unstaged changes in the current directory
 
 # GitHub CLI commands
 ## Authentication
