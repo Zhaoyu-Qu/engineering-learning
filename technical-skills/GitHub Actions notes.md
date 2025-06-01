@@ -6,8 +6,8 @@
     - GitHub-Hosted Runner: GitHub Actions will always provision a seperate VM for each job. You may choose to run job steps directly in a VM, or the VM can run a container which executes your code. Once again, GitHub Actions will always create an independent VM for every single job.
     - Self-Hosted Runner: could be your on-premises infrastructure, or web services. If it's a VM or a physical machine, you will need to install the GitHub Actions runner software to register the machine as a self-hosted runner. If it's a container, then the container should run the software so it is recognised as a self-hosted runner.
 - **Step**: a step is either a shell script or an action. Since a job is a set of steps and each job is assigned one runner, naturally all steps in the same job also run in the same runner in order. These steps can share data with each other since they are in the same runner.
-  - Shell script steps are defined directly in the workflow YAML file under the run: keyword.
-  - Action steps are referenced via uses: and run pre-built code.
+  - Shell script steps are defined directly in the workflow YAML file under the `run:` keyword.
+  - Action steps are referenced via `uses:` and run pre-built code.
 - **Action**: an action is a small, self-contained piece of software designed to perform a complex but frequently repeated task within a CI/CD workflow. You can write your own actions, or find them in the GitHub Marketplace.
 
 # Mechanism
@@ -28,6 +28,13 @@ When triggered, GitHub Actions evaluates your YAML workflow files using the work
 Each step in a job is executed by the runner. If a step returns a non-zero exit code, the runner marks that step as failed and reports the result back to the workflow engine, which updates the UI.
 
 By default, a failed step causes the entire job to stop immediately — unless explicitly configured otherwise using `continue-on-error: true`.
+
+## You cannot host your app on a GitHub-hosted runner
+GitHub-hosted runners are not meant to host applications for the following reasons:
+- Ephemeral: The runner is destroyed after each job — nothing is persisted.
+- Time-limited: Jobs can only run for a limited time (6 hours for free tier, less for others).
+- No public IP: You can’t publicly access apps running inside runners like you would on AWS or Heroku.
+- Costly & not scalable: Even if you hacked it to keep something running, it would be very unreliable and expensive.
 
 # QuickStart
 1. Create a new repository on GitHub
