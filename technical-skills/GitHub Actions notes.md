@@ -10,6 +10,25 @@
   - Action steps are referenced via uses: and run pre-built code.
 - **Action**: an action is a small, self-contained piece of software designed to perform a complex but frequently repeated task within a CI/CD workflow. You can write your own actions, or find them in the GitHub Marketplace.
 
+# Mechanism
+GitHub Actions is an automation platform built into GitHub. Under the hood, it consists of:
+- A **workflow** engine (on GitHub’s servers)
+  - It Parses and validates your workflow file, schedules jobs and assigns runners, sends instructions to the runners, monitors status and collects output, and lastly, sends notifications.
+  - It decides what to run and in what order, but does not execute code or run scripts - that's the runners' job.
+  - It does not check exit codes. Instead, it relies on the runners to report the outcome.
+- A **runner agent** (software installed in a virtual machine)
+  - When the runner starts, the runner agent pulls down your repository, read the `.github/workflows/*.yml` file and executes each step in order.
+  - It translates human-readable steps into shell scripts so the OS can execute them.
+  - It is designed to capture the exit code of every command, log stdout and stderr, send status updates back to GitHub's workflow engine and mark steps as failed or succeeded.
+  - When the job is done, the runner agent finishes any cleanup and then self-terminates (the VM is deleted).
+- A **job scheduler** that determines when and where a job should run. Think of it as a traffic controller. For example, when you push a commit, the scheduler queues a workflow run and assigns jobs to available runners, based on capacity, availability, and concurrency limits.
+- An **orchestrator** that oversees the lifecycle and coordination of jobs and runners. For example, it ensures that jobs start in the right order (respecting needs:), cancels workflows if you push new commits too quickly, and tears down resources after the job finishes.
+
+When triggered, GitHub Actions evaluates your YAML workflow files using the workflow engine, which determines the jobs and steps to run. Execution is then delegated to a GitHub-hosted runner, which is an ephemeral virtual machine.
+Each step in a job is executed by the runner. If a step returns a non-zero exit code, the runner marks that step as failed and reports the result back to the workflow engine, which updates the UI.
+
+By default, a failed step causes the entire job to stop immediately — unless explicitly configured otherwise using `continue-on-error: true`.
+
 # QuickStart
 1. Create a new repository on GitHub
 2. In the repository directory, create a workflow file `.github/workflows/github-actions-demo.yml`.
