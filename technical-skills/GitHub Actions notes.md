@@ -1,6 +1,4 @@
-# Github Actions Notes
-
-## Concepts
+# Concepts
 - **Workflow**: a configurable automated process that will run one or more jobs when triggered. It is defined by a YMAL file stored in .github/workflows. The YMAL file specifies events that trigger the workflow, defines jobs and specifies steps to run within each job. A repository can have multiple workflows. A workflow can be triggered by an event, by a schedule, by posting to a REST API, or manually. 
 - **Event**: an activity in a repository that triggers a workflow run.
 - **Job**: a set of steps. Each job runs inside its own runner. Jobs can run paprallel by default or be configured to run sequentially. However, steps inside a job are always run sequentially.
@@ -12,7 +10,7 @@
   - Action steps are referenced via uses: and run pre-built code.
 - **Action**: an action is a small, self-contained piece of software designed to perform a complex but frequently repeated task within a CI/CD workflow. You can write your own actions, or find them in the GitHub Marketplace.
 
-## QuickStart
+# QuickStart
 1. Create a new repository on GitHub
 2. In the repository directory, create a workflow file `.github/workflows/github-actions-demo.yml`.
    - The workflow files can be given any names, but they must be put in a directory called `.github/workflows` to be discovered.
@@ -40,14 +38,14 @@ jobs:
 4. Commit changes. This will update the workflow file and the push action itself will trigger the workflow.
 5. On GitHub, navigate to the main page of the repository. Click Actions and examine the results.
 
-### Note:
+## Note:
 - The commit always happens first. After the changes have become part of the repository, GitHub emits events (e.g., push) based on the new state of the repository. Lastly, GitHub Actions sees the event and checks .github/workflows/ to decide if any workflows should run.
 - uses: Tells GitHub to use a pre-built action (like a reusable plugin).
 - actions/checkout Refers to the official GitHub "checkout" action (maintained by GitHub) - equivalent to git clone repo then cd repo.
 - @v4 Pins the action to version 4 (stable). Always specify a version.
 
-## Write Workflows
-### Workflow basics
+# Write Workflows
+## Workflow basics
 A workflow must contain the following basic components:
 - One or more events that will trigger the workflow.
 - One or more jobs, each of which will execute on a runner machine and run a series of one or more steps.

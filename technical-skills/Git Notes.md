@@ -1,6 +1,4 @@
-# Git Notes
-
-## Concepts
+# Concepts
 - A file is called a “blob”, standing for `Binary Large Object`. Git treats all files as binary files. It does not differentiate between file types.
 
 - A directory is called a “tree”. `Tree` or `directory` is a high-level concept referring to the hierarchical structure in a repository. The physical representation of a tree is called a `tree object`, a file with its internal structure. Internally, a tree object contains a list of entries, and each entry is composed of:
@@ -40,17 +38,17 @@
 
   Blobs, trees and commits are all objects identified by unique SHA-1 hash values. They are all stored in `.git/objects` - all git objects are stored the same way.
 
-## Mechanism
+# Mechanism
 In Git, a history is a directed **acyclic** graph (DAG) of commits. Each commit has a set of parents rather than a single parent because a commit might descend from multiple parents, for example, due to combining (merging) two parallel branches of development. All Git stores are objects and references. Every command you type is manipulating the underlying graph data structure.
 
 While each commit can be identified by its SHA-1 hash, it is impractical for humans to remember strings of 40 hexadecimal characters. The solution is to use `references`, which are mutable pointers to commits. For example, the `main` reference usually points to the latest commit in the main branch of development. The `HEAD` reference points to where we currently are.
 
-### Staging Area
+## Staging Area
 The staging area is a file, generally contained in your Git directory, that stores information about what will go into your next commit.  
 You need to specify which modifications should be included in the next snapshot by adding the files to the “staging area” (`git add`). Simply saving the files is not enough.
 
-## Commands
-### Basics
+# Commands
+## Basics
 - `git init`
 - `git status`
 - `git add path/to/file`
@@ -59,32 +57,37 @@ You need to specify which modifications should be included in the next snapshot 
 - `git log`
 - `git diff`
 - `git checkout` updates HEAD and current branch
+- `git checkout branch/commit -- path/to/file` check out an item from Git history or another branch
 - `git stash`
 - `git stash apply` applies a stash (default is the latest, named stash@{0})
 
-### Branching and merging
+## Branching and merging
 - `git branch --all` show all branches
 - `git branch <name>` creates a branch
 - `git checkout -b <name>` creates a branch and switches to it
 - `git merge <revision>` merges into current branch
 - `git rebase`
 
-### Remotes
+## Remotes
 - `git remote --verbose` lists existing remotes with their names and URLs
 - `git fetch` fetches data from the remote repository without affecting the local working directory or branches.
 - `git pull` same as `git fetch` + `git merge`
 - `git clone`
 
-### Undo
+## Undo
 - `git reset --soft HEAD~1` undoes the last commit. All committed changes will be put back to the staging area. The old commit object is not deleted, but since it has become unreachable, it may get pruned by the GC process at some point.
 - `git reset --hard HEAD~1` undoes the last commit and discards the changes. The old commit object is still not immediately deleted. The difference is that the undone changes won't show up in the staging area since they are discarded. But you can still retrieve the old commit as long as it hasn't been deleted by the GC process.
 - `git reset` unstages everything
 - `git commit --amend` edits a commit's contents/message
 - `git checkout -- <file>` discards changes
 
-## GitHub CLI commands
-### Authentication
+# GitHub CLI commands
+## Authentication
 - `gh auth login`
 - `gh auth status` checks if you are logged in
 - `gh auth logout`
 - `gh auth switch` switches to (activates) a different account
+
+# Real-world Scenarios
+## Restore items from commit history or grab items from other branches
+Use `git checkout branch/commit -- path/to/file` to update the working directory with the specified content, then `git add` and `git commit` to confirm the changes.
