@@ -81,6 +81,7 @@ You need to specify which modifications should be included in the next snapshot 
 - `git reset` unstages everything
 - `git commit --amend` edits a commit's contents/message
 - `git checkout .` discards unstaged changes in the current directory
+- `git clean -fd` removes untracked files and directories
 
 # GitHub CLI commands
 ## Authentication
@@ -91,4 +92,14 @@ You need to specify which modifications should be included in the next snapshot 
 
 # Real-world Scenarios
 ## Restore items from commit history or grab items from other branches
-Use `git checkout branch/commit -- path/to/file` to update the working directory with the specified content, then `git add` and `git commit` to confirm the changes.
+Use `git checkout branch/commit -- path/to/file` to update the working directory with the specified content, then `git add` and `git commit` to confirm the changes. **Note `--` explictly tells Git that what follows should be interpreted as a path.**
+
+## Create and switch to a new local branch that tracks the remote branch
+### Create and switch to a new local branch that tracks the remote branch
+`git checkout -b local-branch-name remote-branch-name`
+### Verify that the new local branch is tracking the remote branch
+`git branch -vv`
+### Push changes to the remote branch
+`git push origin local-branch-name`
+### Create a remote (upstream) branch for a local branch
+`git push -u origin remote-branch-name`
