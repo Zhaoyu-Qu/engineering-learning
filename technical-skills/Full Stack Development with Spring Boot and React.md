@@ -89,4 +89,57 @@ Benefits:
 - In Eclipse under `Project Explorer`, there is a directory called `JRE System Library [JavaSE-21]`. `JRE System Library` is a virtual directory only visible in `Project Explorer`. It points to the location of the specific JRE used by this project, even though there might be multiple version of JREs installed. `[JavaSE-21]` is the intended JRE version for this project, inferred by Eclipse from the `build.gradle` file. However, Eclipse or Gradle does not guarantee the intended JRE version is used - it just uses the default JRE. You must make sure the intended version of JRE is available and is configured correctly.
 - There is another virtual directory called `Project and External Dependencies`, which points to the cached Gradle dependencies. These dependencies are downloaded by Gradle and can be reused by other projects. If you delete the cached Gradle dependencies, Gradle will simply redownload them the next time you build the project.
 - On macOS, the default Java version is managed by a tool called `/usr/libexec/java_home.` This allows you to set and switch between Java versions system-wide using the `JAVA_HOME` environment variable.
-- Command `/usr/libexec/java_home -v 21` shows the actual location of the JDK 21 on your system, while `which java` shows the the path to the java executable that is currently first in your shell's PATH.
+- Command `/usr/libexec/java_home -v 21` shows the actual location of the JDK 21 on your system, while `which java` shows the the path to the java executable that is currently first in your shell's PATH.  
+
+### GitHub Actions
+1. Create `.github/workflows/gradle.yml` under the root directory.
+2. Paste the GitHub Actions Workflow code below into `gradle.yml`
+    ```
+    name: Java CI with Gradle
+
+    on:
+      push:
+        branches: ["main"]
+
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        permissions:
+          contents: read
+
+        steps:
+          - uses: actions/checkout@v4
+          - name: Set up JDK 21
+            uses: actions/setup-java@v4
+            with:
+              java-version: "21"
+              distribution: "temurin"
+
+          # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
+          # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
+          - name: Setup Gradle
+            uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+          - name: Build with Gradle Wrapper
+            run: ./gradlew build
+
+      dependency-submission:
+        runs-on: ubuntu-latest
+        permissions:
+          contents: write
+
+        steps:
+          - uses: actions/checkout@v4
+          - name: Set up JDK 21
+            uses: actions/setup-java@v4
+            with:
+              java-version: "21"
+              distribution: "temurin"
+
+          # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
+          # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
+          - name: Generate and submit dependency graph
+            uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+    ```
+
+    
