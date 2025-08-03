@@ -142,4 +142,4 @@ Benefits:
             uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
     ```
 
-    
+### GitHub Actions
