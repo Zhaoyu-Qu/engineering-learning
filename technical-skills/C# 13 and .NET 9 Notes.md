@@ -22,6 +22,19 @@ CoreCLR is the cross-platform runtime environment first introduced with .NET Cor
 ## Upgrading an app to a newer version of .NET
 The key step is recompiling the existing source code with the newer compiler. You may need to change the source code if certain features are removed in newer versions of .NET.
 
+## Top-level statements
+During compilation with .NET SDK 6 or later, all the boilerplate code to define the Program class and its main method is generated and wrapped around the statements you write.
+
+Kye points to remeber about top-level programs include the following:
+- With top-level statements, the auto-generated code does not define a namespace, so the Program class is implicitly defined in an empty namespace with no name, instead of a namespace that matches the name of the project.
+- There can be only one file for top-level program code in a project.
+- Any `using` statements must be at the top of the file.
+- If you declare any classes or other types, they must be at the bottom of the file.
+- Although you should name the entry-point method `Main` if you explicitly define it, the method is named `<Main>$` when created by the compiler.
+
+## Implicitly imported namespaces
+In this file, obj-Debug-net9.0-`HelloCS.GlobalUsings.g.cs`, you will find that some commonly used namespaces have been imported for use in all code files. This feature is called `global namespace imports`.
+
 # Versions and History
 ## .NET Framework (2002 - present for legacy apps)
 The .NET Framework is a software framework that runs primarily on Microsoft Windows. It is an implementation of the CLI and has been superseded by the cross-platform .NET. The .NET Framework is still supported for legacy applications.
@@ -32,15 +45,25 @@ The modern .NET platform (formerly .NET Core) is a free, open-source, managed so
 
 # .NET Project Structure
 ## Solution
-A solution (.sln file) is a container that organises one or more projects together in Visual Studio or similar IDEs. The solution keeps track of projects, build configurations, dependencies, settings and everything related to your application (or group of applications).  
+A solution (.sln file) is a container that organises one or more projects together in Visual Studio or similar IDEs. It is not part of .NET itself. If you build a .NET app from the command line using the .NET CLI, you don't need a `.sln` file at all.  
+
+The solution keeps track of projects, build configurations, dependencies, settings and everything related to your application (or group of applications).  
 
 A solution is always the top-level container. If your app is simple, the solution may only have one project. In more complex apps, the solution manages multiple projects (web app, class libraries, test projects, etc.).
 
 ## Project
-Each project procudes something:
+A project (.csproj) is a buildable unit. Each project procudes something:
 - An executable (.exe), e.g., a web app or desktop app
 - a library (.dll), e.g., business logic, data access
-- a test project, e.g., unit tests
+- a test project, e.g., unit tests  
+
+Unlike a solution which is specific to Visual Studio and similar IDES, the concept of a project is part of .NET itself. It tells the .NET build system which source files to compile, which NuGet packages to reference, and what the output should be (DLL, EXE, etc.). Even when using the .NET CLI, you are always working with a `.csproj`.
+
+## Namespace
+A `namespace` is part of the C# language. It's a way to organise and group classes, interfaces, enums, etc. `namespaces` are about logical grouping inside code, thus they don't have to follow project/solution structure. Although, most teams keep them aligned for clarity.
+
+## Subdirectories
+By default, the `.csproj` file uses wildcards to include all `.cs` files under its folder, no matter the depth. The compiler doesn't care if you put everything in the root folder or split into hundreds of subfolders. However, it does care about namespaces. The compiler uses namespaces to avoid naming conflicts and help you control visibility with `using` statements.
 
 ### Content of a Project Directory
 - The `obj` directory contains one compiled object file for each source code file. These objects haven't been linked together into a final executable yet.
@@ -48,12 +71,30 @@ Each project procudes something:
 - The `.csproj` file is an MSBuild project file for a C# project. It's written in XML and tells the .NET build system (MSBuild) how to build your project.
 - The `.cs` files are C# source code files.
 
+# Data Structures
+In C#, everything you can declare in code is a "type". That includes:
+- class - reference type, always on the heap
+- struct - value type, usually on the stack or inline in arrays
+- interface
+- enum
+- delegate
+- record (C# 9+)
+
+Note in C#, there are no true primitives. What appear to be primitive types are only aliases for structs. (e.g., int is System.Int32).
+
+# Syntax
+## Operators
+### ??
+`??` is the null-coalescing operator. In this statement, `string name = typeof(Program).Namespace ?? "<null>"`, if `typeof(Program).Namespace` is null, then `name` is assigned `"<null>"`.
+
+
 # QuickStart
 ## Building console apps using VS Code
 1. `dotnet new sln --name SolutionName`. This creates a solution. The default name is the name of the folder, if not specified.
 2. `dotnet new console --output HelloCS -f net9.0`. This creates a project for a console app named `HellowCS`. If not specified, the project by default targets the latest .NET available on your computer.
 3. `dotnet sln add HelloCS`. This links the project to the solution. The command recognises the only solution available in the current directory.
-4. 
+4. `cd HelloCS && dotnet run` executes the program.
+
 
 # Techniques
 ## Uninstalling .NET
