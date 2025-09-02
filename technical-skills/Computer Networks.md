@@ -109,6 +109,7 @@ Upon receiving the DHCPDISCOVER request, the DHCP server responds with a DHCPOFF
 
 Finally, the client broadcasts a DHCPREQUEST message to accept the address offered. This message informs all DHCP servers which offer it is accepting, and the chosen server responds with a DHCPACK message to confirm the assignment.
 
+Note the DHCPDISCOVER message does not specify whether the client wants a public or private IP address. The message simply requests an IP address and related configuration. It is up to the DHCP server to decide which address to offer, based on its configuration and available address pools.
 ### Private IP Addresses
 The following IP address ranges are private:
 - 10.0.0.0/8
