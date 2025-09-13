@@ -35,6 +35,13 @@ Kye points to remeber about top-level programs include the following:
 ## Implicitly imported namespaces
 In this file, obj-Debug-net9.0-`HelloCS.GlobalUsings.g.cs`, you will find that some commonly used namespaces have been imported for use in all code files. This feature is called `global namespace imports`.
 
+## Kestrel
+Kestrel is the default HTTP server for ASP.NET Core projects.
+### What is an HTTP Server?
+An HTTP server is a program that listens on a network interface (IP address) and port (like :80 or :5000) for HTTP requests from clients (such as web browsers or APIs). It parses those requests, hands them off to the appropriate logic, then sends responses.
+### Kestrel and Your ASP.NET Core App
+When you run your ASP.NET Core application, Kestrel starts automatically (unless you configure a different server). It begins listening for incoming HTTP requests on one or more configured IP/port endpoints (e.g., http://localhost:5000). When Kestrel receives an HTTP request, it parses it (HTTP method, URL, headers, etc.) and passes the request into the middleware pipeline of your ASP.NET Core app. The routing middleware matches the request to the correct handler (e.g., a controller method). Your code executes, processes the request, and generates a response. Kestrel picks up the response and sends it over the network back to the client.
+
 # Versions and History
 ## .NET Framework (2002 - present for legacy apps)
 The .NET Framework is a software framework that runs primarily on Microsoft Windows. It is an implementation of the CLI and has been superseded by the cross-platform .NET. The .NET Framework is still supported for legacy applications.
@@ -68,6 +75,7 @@ By default, the `.csproj` file uses wildcards to include all `.cs` files under i
 ### Content of a Project Directory
 - The `obj` directory contains one compiled object file for each source code file. These objects haven't been linked together into a final executable yet.
 - The `bin` folder contains the binary executable for the application for class library.
+  - `bin/Debug/net10.0` When you build your project in Debug mode (the default for development), the output goes to bin/Debug/net10.0/. When you build in Release mode, it goes to bin/Release/net10.0/. Both contain the final IL code, but the Debug build is intended for development and testing, while Release is for deployment. In .NET, the output directory (like bin/Debug/net10.0/) contains all the compiled assemblies (IL code), dependencies, and content files (like appsettings.json) at the same directory level—no subdirectories by default.
 - The `.csproj` file is an MSBuild project file for a C# project. It's written in XML and tells the .NET build system (MSBuild) how to build your project.
 - The `.cs` files are C# source code files.
 
@@ -81,12 +89,6 @@ In C#, everything you can declare in code is a "type". That includes:
 - record (C# 9+)
 
 Note in C#, there are no true primitives. What appear to be primitive types are only aliases for structs. (e.g., int is System.Int32).
-
-# Syntax
-## Operators
-### ??
-`??` is the null-coalescing operator. In this statement, `string name = typeof(Program).Namespace ?? "<null>"`, if `typeof(Program).Namespace` is null, then `name` is assigned `"<null>"`.
-
 
 # QuickStart
 ## Building console apps using VS Code
