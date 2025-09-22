@@ -259,3 +259,19 @@ Each network interface—whether virtual (like the loopback interface) or physic
 Once a packet arrives at an interface, the operating system must decide which application should receive it. This decision is made using the port number. The port number acts as an identifier, and an application can register to receive all packets sent to a specific interface and port number.
 
 Only one application can listen on a particular port number on the same interface at a time; otherwise, the operating system would not know which application to deliver the packet to. However, a single application can listen on multiple ports on the same interface or across different interfaces.
+
+
+# Security
+## Certificates
+When your application sends an HTTPS request to another server, here’s what happens regarding certificates:
+
+1. Server presents its certificate:
+   The server sends its own certificate to your application.
+2. ertificate chain:
+   The server’s certificate is usually signed by an intermediate CA. The intermediate CA’s certificate is signed by a root CA.
+
+3. Your application verifies the chain:
+   Your application checks if the server’s certificate is valid and trusted. It follows the chain: server certificate → intermediate CA → root CA. The root CA must be in your system’s list of trusted root certificates.
+
+4. Trust decision:
+   If the chain is complete and the root CA is trusted, the connection is allowed. If any certificate in the chain is missing or not trusted, the connection fails.
